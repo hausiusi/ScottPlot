@@ -15,6 +15,8 @@ using ScottPlot.Drawing;
 using ScottPlot.Ticks;
 using System;
 using System.Drawing;
+using ScottPlot.Control;
+using ScottPlot.Plottable;
 
 namespace ScottPlot.Renderable
 {
@@ -28,6 +30,8 @@ namespace ScottPlot.Renderable
         /// Axis dimensions and methods for pixel/unit conversions
         /// </summary>
         public readonly AxisDimensions Dims = new AxisDimensions();
+
+        public AxisConfiguration<IPlottable>? Configuration;
 
         /// <summary>
         /// Plottables with this axis index will use pixel/unit conversions from this axis
@@ -58,6 +62,13 @@ namespace ScottPlot.Renderable
         private readonly AxisLabel AxisLabel = new AxisLabel();
         private readonly AxisTicks AxisTicks = new AxisTicks();
         private readonly AxisLine AxisLine = new AxisLine();
+
+        public void SetAxisConfiguration(IPlottable plottable, AxisBehaviour behaviour)
+        {
+            Configuration = new AxisConfiguration<IPlottable>();
+            Configuration.Plottable = plottable;
+            Configuration.Behaviour = behaviour;
+        }
 
         /// <summary>
         /// Return configuration objects to allow deep customization of axis settings.
@@ -149,11 +160,36 @@ namespace ScottPlot.Renderable
             AxisLabel.PixelSize = PixelSize;
             AxisLine.PixelOffset = PixelOffset;
 
-            using (var gfx = GDI.Graphics(bmp, dims, lowQuality, false))
+            PlotDimensions dims2 = new PlotDimensions(
+                new SizeF(dims.Width, dims.Height),
+                new SizeF(dims.DataWidth, dims.DataHeight),
+                new PointF(dims.DataOffsetX, dims.DataOffsetY),
+                dims.AxisLimits, dims.ScaleFactor);
+
+
+            if (Configuration is { Behaviour: AxisBehaviour.AutoAdjust })
             {
-                AxisTicks.Render(dims, bmp, lowQuality);
-                AxisLabel.Render(dims, bmp, lowQuality);
-                AxisLine.Render(dims, bmp, AxisTicks.SnapPx || lowQuality);
+                var signal = (SignalPlot)Configuration.Plottable;
+
+                dims2 = new PlotDimensions(
+                    new SizeF(dims.Width, dims.Height),
+                    new SizeF(dims.DataWidth, signal.MaxY - signal.MinY),
+                    new PointF(dims.DataOffsetX, signal.MinY),
+                    dims.AxisLimits, dims.ScaleFactor);
+                AxisLine.PixelOffset = 0;
+                AxisLabel.PixelOffset = 0;
+                AxisTicks.PixelOffset = 0;
+            }
+            else
+            {
+                dims2 = dims;
+            }
+
+            using (var gfx = GDI.Graphics(bmp, dims2, lowQuality, false))
+            {
+                AxisTicks.Render(dims2, bmp, lowQuality);
+                AxisLabel.Render(dims2, bmp, lowQuality);
+                AxisLine.Render(dims2, bmp, AxisTicks.SnapPx || lowQuality);
             }
         }
 

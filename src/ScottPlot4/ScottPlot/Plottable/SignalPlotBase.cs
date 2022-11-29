@@ -455,6 +455,8 @@ namespace ScottPlot.Plottable
             return new IntervalMinMax(xPx, yPxLow, yPxHigh);
         }
 
+        public float MaxY, MinY;
+
         /// <summary>
         /// Render the data when there is more than one data point per pixel column.
         /// Each pixel column therefore represents multiple data points.
@@ -503,6 +505,9 @@ namespace ScottPlot.Plottable
                     linePoints[i * 2 + 1] = buf;
                 }
             }
+
+            MaxY = linePoints.Max(p => p.Y);
+            MinY = linePoints.Min(p => p.Y);
 
             for (int i = 0; i < linePoints.Length; i++)
                 linePoints[i].X += dims.DataOffsetX;
