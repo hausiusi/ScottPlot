@@ -144,7 +144,7 @@ namespace ScottPlot.Renderable
         /// Use the latest configuration (size, font settings, axis limits) to determine tick mark positions
         /// </summary>
         public void RecalculateTickPositions(PlotDimensions dims) =>
-            AxisTicks.TickCollection.Recalculate(dims, AxisTicks.TickLabelFont);
+            AxisTicks.TickCollection.Recalculate(Configuration != null ? Configuration.GetRecalculatedDimensions(dims) : dims, AxisTicks.TickLabelFont);
 
         /// <summary>
         /// Render all components of this axis onto the given Bitmap
@@ -169,13 +169,7 @@ namespace ScottPlot.Renderable
 
             if (Configuration is { Behaviour: AxisBehaviour.AutoAdjust })
             {
-                var signal = (SignalPlot)Configuration.Plottable;
-
-                dims2 = new PlotDimensions(
-                    new SizeF(dims.Width, dims.Height),
-                    new SizeF(dims.DataWidth, signal.MaxY - signal.MinY),
-                    new PointF(dims.DataOffsetX, signal.MinY),
-                    dims.AxisLimits, dims.ScaleFactor);
+                dims2 = Configuration.GetRecalculatedDimensions(dims);
                 AxisLine.PixelOffset = 0;
                 AxisLabel.PixelOffset = 0;
                 AxisTicks.PixelOffset = 0;

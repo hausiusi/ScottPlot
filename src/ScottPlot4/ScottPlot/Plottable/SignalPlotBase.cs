@@ -329,6 +329,8 @@ namespace ScottPlot.Plottable
             double offsetY = OffsetYAsDouble;
             PointF point1 = new(dims.GetPixelX(OffsetX), dims.GetPixelY(yMin + offsetY));
             PointF point2 = new(dims.GetPixelX(OffsetX), dims.GetPixelY(yMax + offsetY));
+            MaxY = MinY = point1.Y;
+
             gfx.DrawLine(penHD, point1, point2);
         }
 
@@ -357,6 +359,9 @@ namespace ScottPlot.Plottable
                 PointF linePoint = new(xPixel, yPixel);
                 linePoints.Add(linePoint);
             }
+
+            MaxY = linePoints.Max(p => p.Y);
+            MinY = linePoints.Min(p => p.Y);
 
             if (linePoints.Count > 1)
             {
@@ -716,6 +721,9 @@ namespace ScottPlot.Plottable
                         linePoints.Add(linePointsLevels[j][i + 1]);
                     }
                 }
+
+                MaxY = linePoints.Max(p => p.Y);
+                MinY = linePoints.Min(p => p.Y);
 
                 PointF[] pointsArray = linePoints.ToArray();
                 ValidatePoints(pointsArray);
