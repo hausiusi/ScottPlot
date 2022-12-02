@@ -14,6 +14,7 @@
 using ScottPlot.Drawing;
 using ScottPlot.Ticks;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using ScottPlot.Control;
 using ScottPlot.Plottable;
@@ -32,6 +33,8 @@ namespace ScottPlot.Renderable
         public readonly AxisDimensions Dims = new AxisDimensions();
 
         public AxisConfiguration<IPlottable>? Configuration;
+
+        public static HashSet<AxisConfiguration<IPlottable>> Configurations = new();
 
         /// <summary>
         /// Plottables with this axis index will use pixel/unit conversions from this axis
@@ -68,6 +71,8 @@ namespace ScottPlot.Renderable
             Configuration = new AxisConfiguration<IPlottable>();
             Configuration.Plottable = plottable;
             Configuration.Behaviour = behaviour;
+            Configuration.Axis = this;
+            Configurations.Add(Configuration);
         }
 
         /// <summary>
@@ -143,8 +148,57 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Use the latest configuration (size, font settings, axis limits) to determine tick mark positions
         /// </summary>
-        public void RecalculateTickPositions(PlotDimensions dims) =>
+        public void RecalculateTickPositions(PlotDimensions dims)
+        {
+            RecalculateAxisPosition();
             AxisTicks.TickCollection.Recalculate(Configuration != null ? Configuration.GetRecalculatedDimensions(dims) : dims, AxisTicks.TickLabelFont);
+
+            if (Configuration != null)
+            {
+                Configuration.AxisWidth = AxisTicks.TickCollection.LargestLabelWidth;
+            }
+        }
+
+        private void RecalculateAxisPosition()
+        {
+            if (Configuration is not { Behaviour: AxisBehaviour.AutoAdjust })
+            {
+                return;
+            }
+
+            if (Configuration.PlotDimensions == null)
+            {
+                return;
+            }
+
+            var axisTouchesAnother = false;
+            Configuration.OffsetX = 0;
+
+            do
+            {
+                axisTouchesAnother = false;
+                foreach (var configuration in Configurations)
+                {
+                    if (configuration == this.Configuration)
+                    {
+                        continue;
+                    }
+
+                    if (configuration.PlotDimensions == null)
+                    {
+                        continue;
+                    }
+
+                    if (this.Configuration.Bounds(configuration.Axis))
+                    {
+                        axisTouchesAnother = true;
+                        this.Configuration.OffsetX += configuration.AxisWidth;
+                        break;
+                    }
+                }
+            } while (axisTouchesAnother);
+
+        }
 
         /// <summary>
         /// Render all components of this axis onto the given Bitmap
@@ -170,9 +224,9 @@ namespace ScottPlot.Renderable
             if (Configuration is { Behaviour: AxisBehaviour.AutoAdjust })
             {
                 dims2 = Configuration.GetRecalculatedDimensions(dims);
-                AxisLine.PixelOffset = 0;
-                AxisLabel.PixelOffset = 0;
-                AxisTicks.PixelOffset = 0;
+                AxisLine.PixelOffset = Configuration.OffsetX;
+                AxisLabel.PixelOffset = Configuration.OffsetX;
+                AxisTicks.PixelOffset = Configuration.OffsetX;
             }
             else
             {

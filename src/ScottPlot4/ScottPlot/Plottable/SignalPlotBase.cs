@@ -31,6 +31,9 @@ namespace ScottPlot.Plottable
         public bool StepDisplayRight { get; set; } = true;
 
         private float _markerSize = 5;
+
+        public float YMaxPx, YMinPx;
+
         public float MarkerSize
         {
             get => IsHighlighted ? _markerSize * HighlightCoefficient : _markerSize;
@@ -329,7 +332,7 @@ namespace ScottPlot.Plottable
             double offsetY = OffsetYAsDouble;
             PointF point1 = new(dims.GetPixelX(OffsetX), dims.GetPixelY(yMin + offsetY));
             PointF point2 = new(dims.GetPixelX(OffsetX), dims.GetPixelY(yMax + offsetY));
-            MaxY = MinY = point1.Y;
+            YMaxPx = YMinPx = point1.Y;
 
             gfx.DrawLine(penHD, point1, point2);
         }
@@ -360,8 +363,8 @@ namespace ScottPlot.Plottable
                 linePoints.Add(linePoint);
             }
 
-            MaxY = linePoints.Max(p => p.Y);
-            MinY = linePoints.Min(p => p.Y);
+            YMaxPx = linePoints.Max(p => p.Y);
+            YMinPx = linePoints.Min(p => p.Y);
 
             if (linePoints.Count > 1)
             {
@@ -460,8 +463,6 @@ namespace ScottPlot.Plottable
             return new IntervalMinMax(xPx, yPxLow, yPxHigh);
         }
 
-        public float MaxY, MinY;
-
         /// <summary>
         /// Render the data when there is more than one data point per pixel column.
         /// Each pixel column therefore represents multiple data points.
@@ -511,8 +512,8 @@ namespace ScottPlot.Plottable
                 }
             }
 
-            MaxY = linePoints.Max(p => p.Y);
-            MinY = linePoints.Min(p => p.Y);
+            YMaxPx = linePoints.Max(p => p.Y);
+            YMinPx = linePoints.Min(p => p.Y);
 
             for (int i = 0; i < linePoints.Length; i++)
                 linePoints[i].X += dims.DataOffsetX;
@@ -722,8 +723,8 @@ namespace ScottPlot.Plottable
                     }
                 }
 
-                MaxY = linePoints.Max(p => p.Y);
-                MinY = linePoints.Min(p => p.Y);
+                YMaxPx = linePoints.Max(p => p.Y);
+                YMinPx = linePoints.Min(p => p.Y);
 
                 PointF[] pointsArray = linePoints.ToArray();
                 ValidatePoints(pointsArray);
