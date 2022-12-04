@@ -315,6 +315,13 @@ namespace ScottPlot.Plottable
                 throw new InvalidOperationException("Signal data must not contain Infinity");
 
             double offsetY = OffsetYAsDouble;
+
+            if (Math.Abs(yMin - yMax) < 1)
+            {
+                yMin -= 1;
+                yMax += 1;
+            }
+
             return new AxisLimits(
                 xMin: xMin + OffsetX,
                 xMax: xMax + OffsetX,

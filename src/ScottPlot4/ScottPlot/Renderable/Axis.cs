@@ -156,6 +156,7 @@ namespace ScottPlot.Renderable
             if (Configuration != null)
             {
                 Configuration.AxisWidth = AxisTicks.TickCollection.LargestLabelWidth;
+                Configuration.AxisLabelHeight = AxisTicks.TickCollection.LargestLabelHeight;
             }
         }
 

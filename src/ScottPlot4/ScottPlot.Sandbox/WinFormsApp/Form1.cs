@@ -43,7 +43,7 @@ namespace WinFormsApp
             _axis2.SetAxisConfiguration(signal, AxisBehaviour.AutoAdjust);
             plt.Add(signal);
 
-            double[] values2 = DataGen.RandomWalk(1_000_000);
+            double[] values2 = DataGen.Full(1_000_000, 0);//DataGen.RandomWalk(1_000_000);
             var signal2 = new SignalPlot()
             {
                 XAxisIndex = 1,

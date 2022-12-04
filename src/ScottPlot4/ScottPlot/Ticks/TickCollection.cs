@@ -284,6 +284,7 @@ namespace ScottPlot.Ticks
                 high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
                 maxTickCount = (int)(dims.DataHeight / labelHeight * TickDensity);
                 maxTickCount = forcedTickCount ?? maxTickCount;
+                maxTickCount = maxTickCount == 0 ? 1 : maxTickCount;
                 tickSpacing = (manualSpacingY != 0) ? manualSpacingY : GetIdealTickSpacing(low, high, maxTickCount, radix);
                 tickSpacing = Math.Max(tickSpacing, MinimumTickSpacing);
             }

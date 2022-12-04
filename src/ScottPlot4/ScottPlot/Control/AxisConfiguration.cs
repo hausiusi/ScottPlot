@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Linq;
 using ScottPlot.Plottable;
 using ScottPlot.Renderable;
@@ -15,6 +16,8 @@ namespace ScottPlot.Control
 
         public float AxisWidth { get; set; }
 
+        public float AxisLabelHeight { get; set; }
+
         public Axis Axis { get; set; }
 
         public PlotDimensions PlotDimensions { get; set; }
@@ -27,7 +30,8 @@ namespace ScottPlot.Control
             {
                 if (Plottable is SignalPlot signal)
                 {
-                    return new SizeF(AxisWidth, signal.YMaxPx - signal.YMinPx);
+                    var height = signal.YMaxPx - signal.YMinPx;
+                    return new SizeF(AxisWidth, height > 0 ? height : AxisLabelHeight);
                 }
                 return new SizeF(0, 0);
             }
@@ -41,6 +45,11 @@ namespace ScottPlot.Control
                 {
                     var x = (float)(PlotDimensions.XMin - AxisWidth) + OffsetX;
                     var y = signal.YMinPx;
+                    if (Math.Abs(AxisSize.Height - AxisLabelHeight) < 0.1)
+                    {
+                        y -= AxisLabelHeight / 2;
+                    }
+
                     return new PointF(x, y);
                 }
                 return new PointF(0, 0);
@@ -49,6 +58,11 @@ namespace ScottPlot.Control
 
         public bool SharesVerticalLine(Axis other)
         {
+            if (!other.IsVisible)
+            {
+                return false;
+            }
+
             var configuration2 = other.Configuration;
             if (configuration2 == null)
             {
@@ -72,6 +86,11 @@ namespace ScottPlot.Control
 
         public bool SharesHorizontalLine(Axis other)
         {
+            if (!other.IsVisible)
+            {
+                return false;
+            }
+
             var configuration2 = other.Configuration;
             if (configuration2 == null)
             {
@@ -116,9 +135,9 @@ namespace ScottPlot.Control
             //var axisLimits = new AxisLimits(dims.XMin, dims.XMax, signal.Ys.Min(), signal.Ys.Max());
 
             return new PlotDimensions(
-                new SizeF(dims.Width, signal.YMaxPx - signal.YMinPx),
-                new SizeF(dims.DataWidth, signal.YMaxPx - signal.YMinPx),
-                new PointF(dims.DataOffsetX, signal.YMinPx),
+                new SizeF(dims.Width, AxisSize.Height),
+                new SizeF(dims.DataWidth, AxisSize.Height),
+                new PointF(dims.DataOffsetX, AxisPosition.Y),
                 AxisLimits, dims.ScaleFactor);
         }
     }
