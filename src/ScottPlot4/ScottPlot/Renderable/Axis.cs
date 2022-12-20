@@ -16,6 +16,7 @@ using ScottPlot.Ticks;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using ScottPlot.Control;
 using ScottPlot.Plottable;
 
@@ -138,9 +139,24 @@ namespace ScottPlot.Renderable
         public float GetSize()
         {
             if (IsVisible == false || Collapsed)
+            {
                 return 0;
-            else
-                return PixelSize + PixelSizePadding;
+            }
+            if (Configuration is { Behaviour: AxisBehaviour.AutoAdjust })
+            {
+                HashSet<float> axisWidthsOnThisVerticalLine = new();
+                axisWidthsOnThisVerticalLine.Add(this.PixelSize);
+                foreach (var configuration in Configurations)
+                {
+                    if (configuration.SharesVerticalLine(this))
+                    {
+                        axisWidthsOnThisVerticalLine.Add(configuration.Axis.PixelSize);
+                    }
+                }
+
+                return Math.Abs(axisWidthsOnThisVerticalLine.Max() - this.PixelSize) < 0.5 ? this.PixelSize : 0;
+            }
+            return PixelSize + PixelSizePadding;
         }
 
         public override string ToString() => $"{Edge} axis from {Dims.Min} to {Dims.Max}";
@@ -155,8 +171,9 @@ namespace ScottPlot.Renderable
 
             if (Configuration != null)
             {
-                Configuration.AxisWidth = AxisTicks.TickCollection.LargestLabelWidth;
-                Configuration.AxisLabelHeight = AxisTicks.TickCollection.LargestLabelHeight;
+                Configuration.AxisWidth = PixelSize;
+                Configuration.AxisTickLabelHeight = AxisTicks.TickCollection.LargestLabelHeight;
+                Configuration.AxisLabelWidth = AxisLabel.PixelSize;
             }
         }
 
@@ -193,12 +210,16 @@ namespace ScottPlot.Renderable
                     if (this.Configuration.Bounds(configuration.Axis))
                     {
                         axisTouchesAnother = true;
-                        this.Configuration.OffsetX += configuration.AxisWidth;
+                        this.Configuration.OffsetX += 1; // configuration.AxisWidth;
                         break;
                     }
                 }
             } while (axisTouchesAnother);
 
+            /*if (this.IsHorizontal)
+            {
+                this.PixelOffset = Configurations.Max(x => x.OffsetX);
+            }*/
         }
 
         /// <summary>
@@ -215,12 +236,7 @@ namespace ScottPlot.Renderable
             AxisLabel.PixelSize = PixelSize;
             AxisLine.PixelOffset = PixelOffset;
 
-            PlotDimensions dims2 = new PlotDimensions(
-                new SizeF(dims.Width, dims.Height),
-                new SizeF(dims.DataWidth, dims.DataHeight),
-                new PointF(dims.DataOffsetX, dims.DataOffsetY),
-                dims.AxisLimits, dims.ScaleFactor);
-
+            PlotDimensions dims2;
 
             if (Configuration is { Behaviour: AxisBehaviour.AutoAdjust })
             {

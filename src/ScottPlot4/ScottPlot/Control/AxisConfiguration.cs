@@ -16,7 +16,9 @@ namespace ScottPlot.Control
 
         public float AxisWidth { get; set; }
 
-        public float AxisLabelHeight { get; set; }
+        public float AxisLabelWidth { get; set; }
+
+        public float AxisTickLabelHeight { get; set; }
 
         public Axis Axis { get; set; }
 
@@ -31,7 +33,7 @@ namespace ScottPlot.Control
                 if (Plottable is SignalPlot signal)
                 {
                     var height = signal.YMaxPx - signal.YMinPx;
-                    return new SizeF(AxisWidth, height > 0 ? height : AxisLabelHeight);
+                    return new SizeF(AxisWidth, height > 0 ? height : AxisTickLabelHeight);
                 }
                 return new SizeF(0, 0);
             }
@@ -41,13 +43,13 @@ namespace ScottPlot.Control
         {
             get
             {
-                if (Plottable is SignalPlot signal)
+                if (Plottable is SignalPlot signal && PlotDimensions != null)
                 {
-                    var x = (float)(PlotDimensions.XMin - AxisWidth) + OffsetX;
+                    var x = (float)(PlotDimensions.XMin - AxisSize.Width) + OffsetX;
                     var y = signal.YMinPx;
-                    if (Math.Abs(AxisSize.Height - AxisLabelHeight) < 0.1)
+                    if (Math.Abs(AxisSize.Height - AxisTickLabelHeight) < 0.1)
                     {
-                        y -= AxisLabelHeight / 2;
+                        y -= AxisTickLabelHeight / 2;
                     }
 
                     return new PointF(x, y);
@@ -63,13 +65,18 @@ namespace ScottPlot.Control
                 return false;
             }
 
+            if (other.Edge != this.Axis.Edge)
+            {
+                return false;
+            }
+
             var configuration2 = other.Configuration;
             if (configuration2 == null)
             {
                 return false;
             }
 
-            var leftLineCheck1= IsInRange(this.AxisPosition.X, configuration2.AxisPosition.X,
+            var leftLineCheck1 = IsInRange(this.AxisPosition.X, configuration2.AxisPosition.X,
                 configuration2.AxisPosition.X + configuration2.AxisWidth);
 
             var rightLineCheck1 = IsInRange(this.AxisPosition.X + this.AxisWidth, configuration2.AxisPosition.X,
@@ -87,6 +94,11 @@ namespace ScottPlot.Control
         public bool SharesHorizontalLine(Axis other)
         {
             if (!other.IsVisible)
+            {
+                return false;
+            }
+
+            if (other.Edge != this.Axis.Edge)
             {
                 return false;
             }
