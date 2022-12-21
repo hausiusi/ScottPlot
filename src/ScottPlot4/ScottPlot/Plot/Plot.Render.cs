@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using ScottPlot.Control;
 
 namespace ScottPlot
 {
@@ -57,7 +58,7 @@ namespace ScottPlot
         {
             settings.DataBackground.Render(dims, bmp, lowQuality);
 
-            if (!settings.DrawGridAbovePlottables)
+            if (!settings.DrawGridAbovePlottables && !AxesHaveAutoAdjustableConfiguration())
             {
                 RenderAxes(bmp, lowQuality, dims);
             }
@@ -117,6 +118,11 @@ namespace ScottPlot
             settings.ZoomRectangle.Render(dims, bmp, lowQuality);
             settings.BenchmarkMessage.Render(dims, bmp, lowQuality);
             settings.ErrorMessage.Render(dims, bmp, lowQuality);
+
+            if (AxesHaveAutoAdjustableConfiguration())
+            {
+                RenderAxes(bmp, lowQuality, dims);
+            }
         }
 
         private void RenderAxes(Bitmap bmp, bool lowQuality, PlotDimensions dims)
@@ -136,6 +142,12 @@ namespace ScottPlot
                     throw new InvalidOperationException("data cannot contain Infinity");
                 }
             }
+        }
+
+        private bool AxesHaveAutoAdjustableConfiguration()
+        {
+            return settings.Axes.FirstOrDefault(x =>
+                x.Configuration != null && x.Configuration.Behaviour == AxisBehaviour.AutoAdjust) != null;
         }
 
         #endregion

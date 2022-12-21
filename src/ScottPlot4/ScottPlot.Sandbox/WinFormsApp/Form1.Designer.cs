@@ -41,24 +41,26 @@
             this.cbxAxis2Lbl = new System.Windows.Forms.CheckBox();
             this.cbxAxis3Lbl = new System.Windows.Forms.CheckBox();
             this.cbxAxis4Lbl = new System.Windows.Forms.CheckBox();
+            this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.tlpMain.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // formsPlot1
             // 
-            this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.formsPlot1.BackColor = System.Drawing.Color.Transparent;
-            this.formsPlot1.Location = new System.Drawing.Point(13, 12);
+            this.formsPlot1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.formsPlot1.Location = new System.Drawing.Point(4, 3);
             this.formsPlot1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(807, 355);
+            this.formsPlot1.Size = new System.Drawing.Size(825, 385);
             this.formsPlot1.TabIndex = 0;
             // 
             // cbxLockAxis1
             // 
             this.cbxLockAxis1.AutoSize = true;
-            this.cbxLockAxis1.Location = new System.Drawing.Point(62, 373);
+            this.cbxLockAxis1.Location = new System.Drawing.Point(11, 13);
             this.cbxLockAxis1.Name = "cbxLockAxis1";
             this.cbxLockAxis1.Size = new System.Drawing.Size(85, 19);
             this.cbxLockAxis1.TabIndex = 1;
@@ -69,7 +71,7 @@
             // cbxLockAxis2
             // 
             this.cbxLockAxis2.AutoSize = true;
-            this.cbxLockAxis2.Location = new System.Drawing.Point(167, 373);
+            this.cbxLockAxis2.Location = new System.Drawing.Point(116, 13);
             this.cbxLockAxis2.Name = "cbxLockAxis2";
             this.cbxLockAxis2.Size = new System.Drawing.Size(85, 19);
             this.cbxLockAxis2.TabIndex = 2;
@@ -80,7 +82,7 @@
             // cbxAxis1Right
             // 
             this.cbxAxis1Right.AutoSize = true;
-            this.cbxAxis1Right.Location = new System.Drawing.Point(62, 403);
+            this.cbxAxis1Right.Location = new System.Drawing.Point(11, 43);
             this.cbxAxis1Right.Name = "cbxAxis1Right";
             this.cbxAxis1Right.Size = new System.Drawing.Size(54, 19);
             this.cbxAxis1Right.TabIndex = 3;
@@ -91,7 +93,7 @@
             // cbxAxis2Right
             // 
             this.cbxAxis2Right.AutoSize = true;
-            this.cbxAxis2Right.Location = new System.Drawing.Point(167, 403);
+            this.cbxAxis2Right.Location = new System.Drawing.Point(116, 43);
             this.cbxAxis2Right.Name = "cbxAxis2Right";
             this.cbxAxis2Right.Size = new System.Drawing.Size(54, 19);
             this.cbxAxis2Right.TabIndex = 4;
@@ -102,7 +104,7 @@
             // cbxLockAxis3
             // 
             this.cbxLockAxis3.AutoSize = true;
-            this.cbxLockAxis3.Location = new System.Drawing.Point(276, 373);
+            this.cbxLockAxis3.Location = new System.Drawing.Point(225, 13);
             this.cbxLockAxis3.Name = "cbxLockAxis3";
             this.cbxLockAxis3.Size = new System.Drawing.Size(85, 19);
             this.cbxLockAxis3.TabIndex = 5;
@@ -113,7 +115,7 @@
             // cbxAxis3Right
             // 
             this.cbxAxis3Right.AutoSize = true;
-            this.cbxAxis3Right.Location = new System.Drawing.Point(276, 403);
+            this.cbxAxis3Right.Location = new System.Drawing.Point(225, 43);
             this.cbxAxis3Right.Name = "cbxAxis3Right";
             this.cbxAxis3Right.Size = new System.Drawing.Size(54, 19);
             this.cbxAxis3Right.TabIndex = 6;
@@ -124,7 +126,7 @@
             // cbxLockAxis4
             // 
             this.cbxLockAxis4.AutoSize = true;
-            this.cbxLockAxis4.Location = new System.Drawing.Point(386, 373);
+            this.cbxLockAxis4.Location = new System.Drawing.Point(335, 13);
             this.cbxLockAxis4.Name = "cbxLockAxis4";
             this.cbxLockAxis4.Size = new System.Drawing.Size(85, 19);
             this.cbxLockAxis4.TabIndex = 7;
@@ -135,7 +137,7 @@
             // cbxAxis4Right
             // 
             this.cbxAxis4Right.AutoSize = true;
-            this.cbxAxis4Right.Location = new System.Drawing.Point(386, 403);
+            this.cbxAxis4Right.Location = new System.Drawing.Point(335, 43);
             this.cbxAxis4Right.Name = "cbxAxis4Right";
             this.cbxAxis4Right.Size = new System.Drawing.Size(54, 19);
             this.cbxAxis4Right.TabIndex = 8;
@@ -146,7 +148,7 @@
             // cbxAxis1Lbl
             // 
             this.cbxAxis1Lbl.AutoSize = true;
-            this.cbxAxis1Lbl.Location = new System.Drawing.Point(62, 428);
+            this.cbxAxis1Lbl.Location = new System.Drawing.Point(11, 68);
             this.cbxAxis1Lbl.Name = "cbxAxis1Lbl";
             this.cbxAxis1Lbl.Size = new System.Drawing.Size(54, 19);
             this.cbxAxis1Lbl.TabIndex = 9;
@@ -157,7 +159,7 @@
             // cbxAxis2Lbl
             // 
             this.cbxAxis2Lbl.AutoSize = true;
-            this.cbxAxis2Lbl.Location = new System.Drawing.Point(167, 428);
+            this.cbxAxis2Lbl.Location = new System.Drawing.Point(116, 68);
             this.cbxAxis2Lbl.Name = "cbxAxis2Lbl";
             this.cbxAxis2Lbl.Size = new System.Drawing.Size(54, 19);
             this.cbxAxis2Lbl.TabIndex = 9;
@@ -168,7 +170,7 @@
             // cbxAxis3Lbl
             // 
             this.cbxAxis3Lbl.AutoSize = true;
-            this.cbxAxis3Lbl.Location = new System.Drawing.Point(276, 428);
+            this.cbxAxis3Lbl.Location = new System.Drawing.Point(225, 68);
             this.cbxAxis3Lbl.Name = "cbxAxis3Lbl";
             this.cbxAxis3Lbl.Size = new System.Drawing.Size(54, 19);
             this.cbxAxis3Lbl.TabIndex = 9;
@@ -179,7 +181,7 @@
             // cbxAxis4Lbl
             // 
             this.cbxAxis4Lbl.AutoSize = true;
-            this.cbxAxis4Lbl.Location = new System.Drawing.Point(386, 428);
+            this.cbxAxis4Lbl.Location = new System.Drawing.Point(335, 68);
             this.cbxAxis4Lbl.Name = "cbxAxis4Lbl";
             this.cbxAxis4Lbl.Size = new System.Drawing.Size(54, 19);
             this.cbxAxis4Lbl.TabIndex = 9;
@@ -187,29 +189,54 @@
             this.cbxAxis4Lbl.UseVisualStyleBackColor = true;
             this.cbxAxis4Lbl.CheckedChanged += new System.EventHandler(this.cbxAxis4Lbl_CheckedChanged);
             // 
+            // tlpMain
+            // 
+            this.tlpMain.ColumnCount = 1;
+            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMain.Controls.Add(this.panel1, 0, 1);
+            this.tlpMain.Controls.Add(this.formsPlot1, 0, 0);
+            this.tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpMain.Location = new System.Drawing.Point(0, 0);
+            this.tlpMain.Name = "tlpMain";
+            this.tlpMain.RowCount = 2;
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tlpMain.Size = new System.Drawing.Size(833, 511);
+            this.tlpMain.TabIndex = 10;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.cbxLockAxis4);
+            this.panel1.Controls.Add(this.cbxAxis4Lbl);
+            this.panel1.Controls.Add(this.cbxLockAxis1);
+            this.panel1.Controls.Add(this.cbxAxis3Lbl);
+            this.panel1.Controls.Add(this.cbxLockAxis2);
+            this.panel1.Controls.Add(this.cbxAxis2Lbl);
+            this.panel1.Controls.Add(this.cbxAxis1Right);
+            this.panel1.Controls.Add(this.cbxAxis1Lbl);
+            this.panel1.Controls.Add(this.cbxAxis2Right);
+            this.panel1.Controls.Add(this.cbxAxis4Right);
+            this.panel1.Controls.Add(this.cbxLockAxis3);
+            this.panel1.Controls.Add(this.cbxAxis3Right);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 394);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(827, 114);
+            this.panel1.TabIndex = 1;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(833, 511);
-            this.Controls.Add(this.cbxAxis4Lbl);
-            this.Controls.Add(this.cbxAxis3Lbl);
-            this.Controls.Add(this.cbxAxis2Lbl);
-            this.Controls.Add(this.cbxAxis1Lbl);
-            this.Controls.Add(this.cbxAxis4Right);
-            this.Controls.Add(this.cbxLockAxis4);
-            this.Controls.Add(this.cbxAxis3Right);
-            this.Controls.Add(this.cbxLockAxis3);
-            this.Controls.Add(this.cbxAxis2Right);
-            this.Controls.Add(this.cbxAxis1Right);
-            this.Controls.Add(this.cbxLockAxis2);
-            this.Controls.Add(this.cbxLockAxis1);
-            this.Controls.Add(this.formsPlot1);
+            this.Controls.Add(this.tlpMain);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormsPlot Sandbox";
+            this.tlpMain.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -228,5 +255,7 @@
         private System.Windows.Forms.CheckBox cbxAxis2Lbl;
         private System.Windows.Forms.CheckBox cbxAxis3Lbl;
         private System.Windows.Forms.CheckBox cbxAxis4Lbl;
+        private System.Windows.Forms.TableLayoutPanel tlpMain;
+        private System.Windows.Forms.Panel panel1;
     }
 }
