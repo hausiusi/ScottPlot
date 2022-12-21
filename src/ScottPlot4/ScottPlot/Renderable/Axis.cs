@@ -144,17 +144,16 @@ namespace ScottPlot.Renderable
             }
             if (Configuration is { Behaviour: AxisBehaviour.AutoAdjust })
             {
-                HashSet<float> axisWidthsOnThisVerticalLine = new();
-                axisWidthsOnThisVerticalLine.Add(this.PixelSize);
-                foreach (var configuration in Configurations)
-                {
-                    if (configuration.SharesVerticalLine(this))
-                    {
-                        axisWidthsOnThisVerticalLine.Add(configuration.Axis.PixelSize);
-                    }
-                }
+                var axesOnThisVerticalLine = new List<AxisConfiguration<IPlottable>>();
+                axesOnThisVerticalLine.Add(this.Configuration);
 
-                return Math.Abs(axisWidthsOnThisVerticalLine.Max() - this.PixelSize) < 0.5 ? this.PixelSize : 0;
+                axesOnThisVerticalLine.AddRange(Configurations.Where(configuration => configuration.SharesVerticalLine(this)));
+                axesOnThisVerticalLine.Sort((x, y) => (int)(y.Axis.PixelSize - x.Axis.PixelSize));
+                axesOnThisVerticalLine.RemoveAll((x) => x.Axis.PixelSize != axesOnThisVerticalLine[0].Axis.PixelSize);
+                axesOnThisVerticalLine.Sort((x, y)=> (int)(x.AxisPosition.Y - y.AxisPosition.Y));
+
+                var resultConfig = axesOnThisVerticalLine.Find((x)=> x == this.Configuration);
+                return resultConfig == null || resultConfig != axesOnThisVerticalLine[0] ? 0 : resultConfig.Axis.PixelSize + PixelSizePadding;
             }
             return PixelSize + PixelSizePadding;
         }
