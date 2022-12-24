@@ -70,6 +70,11 @@ namespace ScottPlot.Control
                 return false;
             }
 
+            if (!this.Axis.IsVisible || !other.IsVisible)
+            {
+                return false;
+            }
+
             var configuration2 = other.Configuration;
             if (configuration2 == null)
             {
@@ -99,6 +104,11 @@ namespace ScottPlot.Control
             }
 
             if (other.Edge != this.Axis.Edge)
+            {
+                return false;
+            }
+
+            if (!this.Axis.IsVisible || !other.IsVisible)
             {
                 return false;
             }

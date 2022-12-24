@@ -166,6 +166,15 @@ namespace WinFormsApp
             formsPlot1.Refresh();
         }
 
+        private void AxisIsVisible(object sender, EventArgs e)
+        {
+            _axis2.IsVisible = cbxAxis1Visible.Checked;
+            _axis3.IsVisible = cbxAxis2Visible.Checked;
+            _axis4.IsVisible = cbxAxis3Visible.Checked;
+            _axis5.IsVisible = cbxAxis4Visible.Checked;
+            formsPlot1.Refresh();
+        }
+
         private void cbxAxis1Right_CheckedChanged(object sender, EventArgs e)
         {
             _axis2.Edge = cbxAxis1Right.Checked ? Edge.Right : Edge.Left;

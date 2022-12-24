@@ -43,6 +43,10 @@
             this.cbxAxis4Lbl = new System.Windows.Forms.CheckBox();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.cbxAxis4Visible = new System.Windows.Forms.CheckBox();
+            this.cbxAxis3Visible = new System.Windows.Forms.CheckBox();
+            this.cbxAxis2Visible = new System.Windows.Forms.CheckBox();
+            this.cbxAxis1Visible = new System.Windows.Forms.CheckBox();
             this.tlpMain.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -206,6 +210,10 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.cbxAxis4Visible);
+            this.panel1.Controls.Add(this.cbxAxis3Visible);
+            this.panel1.Controls.Add(this.cbxAxis2Visible);
+            this.panel1.Controls.Add(this.cbxAxis1Visible);
             this.panel1.Controls.Add(this.cbxLockAxis4);
             this.panel1.Controls.Add(this.cbxAxis4Lbl);
             this.panel1.Controls.Add(this.cbxLockAxis1);
@@ -223,6 +231,58 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(827, 114);
             this.panel1.TabIndex = 1;
+            // 
+            // cbxAxis4Visible
+            // 
+            this.cbxAxis4Visible.AutoSize = true;
+            this.cbxAxis4Visible.Checked = true;
+            this.cbxAxis4Visible.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbxAxis4Visible.Location = new System.Drawing.Point(335, 92);
+            this.cbxAxis4Visible.Name = "cbxAxis4Visible";
+            this.cbxAxis4Visible.Size = new System.Drawing.Size(60, 19);
+            this.cbxAxis4Visible.TabIndex = 13;
+            this.cbxAxis4Visible.Text = "Visible";
+            this.cbxAxis4Visible.UseVisualStyleBackColor = true;
+            this.cbxAxis4Visible.CheckedChanged += new System.EventHandler(this.AxisIsVisible);
+            // 
+            // cbxAxis3Visible
+            // 
+            this.cbxAxis3Visible.AutoSize = true;
+            this.cbxAxis3Visible.Checked = true;
+            this.cbxAxis3Visible.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbxAxis3Visible.Location = new System.Drawing.Point(225, 93);
+            this.cbxAxis3Visible.Name = "cbxAxis3Visible";
+            this.cbxAxis3Visible.Size = new System.Drawing.Size(60, 19);
+            this.cbxAxis3Visible.TabIndex = 12;
+            this.cbxAxis3Visible.Text = "Visible";
+            this.cbxAxis3Visible.UseVisualStyleBackColor = true;
+            this.cbxAxis3Visible.CheckedChanged += new System.EventHandler(this.AxisIsVisible);
+            // 
+            // cbxAxis2Visible
+            // 
+            this.cbxAxis2Visible.AutoSize = true;
+            this.cbxAxis2Visible.Checked = true;
+            this.cbxAxis2Visible.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbxAxis2Visible.Location = new System.Drawing.Point(116, 92);
+            this.cbxAxis2Visible.Name = "cbxAxis2Visible";
+            this.cbxAxis2Visible.Size = new System.Drawing.Size(60, 19);
+            this.cbxAxis2Visible.TabIndex = 11;
+            this.cbxAxis2Visible.Text = "Visible";
+            this.cbxAxis2Visible.UseVisualStyleBackColor = true;
+            this.cbxAxis2Visible.CheckedChanged += new System.EventHandler(this.AxisIsVisible);
+            // 
+            // cbxAxis1Visible
+            // 
+            this.cbxAxis1Visible.AutoSize = true;
+            this.cbxAxis1Visible.Checked = true;
+            this.cbxAxis1Visible.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbxAxis1Visible.Location = new System.Drawing.Point(11, 92);
+            this.cbxAxis1Visible.Name = "cbxAxis1Visible";
+            this.cbxAxis1Visible.Size = new System.Drawing.Size(60, 19);
+            this.cbxAxis1Visible.TabIndex = 10;
+            this.cbxAxis1Visible.Text = "Visible";
+            this.cbxAxis1Visible.UseVisualStyleBackColor = true;
+            this.cbxAxis1Visible.CheckedChanged += new System.EventHandler(this.AxisIsVisible);
             // 
             // Form1
             // 
@@ -257,5 +317,9 @@
         private System.Windows.Forms.CheckBox cbxAxis4Lbl;
         private System.Windows.Forms.TableLayoutPanel tlpMain;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.CheckBox cbxAxis2Visible;
+        private System.Windows.Forms.CheckBox cbxAxis1Visible;
+        private System.Windows.Forms.CheckBox cbxAxis4Visible;
+        private System.Windows.Forms.CheckBox cbxAxis3Visible;
     }
 }
