@@ -1,8 +1,7 @@
-﻿using System;
-using System.Drawing;
-using System.Linq;
-using ScottPlot.Plottable;
+﻿using ScottPlot.Plottable;
 using ScottPlot.Renderable;
+using System;
+using System.Drawing;
 
 namespace ScottPlot.Control
 {

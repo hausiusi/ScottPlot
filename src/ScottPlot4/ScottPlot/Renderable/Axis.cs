@@ -35,7 +35,7 @@ namespace ScottPlot.Renderable
 
         public AxisConfiguration<IPlottable>? Configuration;
 
-        public static HashSet<AxisConfiguration<IPlottable>> Configurations = new();
+        public AxisConfigurations Configurations = new();
 
         /// <summary>
         /// Plottables with this axis index will use pixel/unit conversions from this axis
@@ -67,8 +67,9 @@ namespace ScottPlot.Renderable
         private readonly AxisTicks AxisTicks = new AxisTicks();
         private readonly AxisLine AxisLine = new AxisLine();
 
-        public void SetAxisConfiguration(IPlottable plottable, AxisBehaviour behaviour)
+        public void SetAxisConfiguration(AxisConfigurations configurations, IPlottable plottable, AxisBehaviour behaviour)
         {
+            Configurations = configurations;
             Configuration = new AxisConfiguration<IPlottable>();
             Configuration.Plottable = plottable;
             Configuration.Behaviour = behaviour;

@@ -21,6 +21,8 @@ namespace WinFormsApp
             plt.YAxis.IsVisible = false;
             plt.YAxis2.IsVisible = false;
 
+            AxisConfigurations axisConfigurations = new();
+
             double[] values2 = DataGen.RandomWalk(1_000_000);
             var signal2 = new SignalPlot()
             {
@@ -40,7 +42,7 @@ namespace WinFormsApp
 
             _axis2 = plt.AddAxis(Edge.Left, signal2.YAxisIndex);
             _axis2.Line(true, signal2.Color, 2);
-            _axis2.SetAxisConfiguration(signal2, AxisBehaviour.AutoAdjust);
+            _axis2.SetAxisConfiguration(axisConfigurations, signal2, AxisBehaviour.AutoAdjust);
             plt.Add(signal2);
 
             double[] values3 = DataGen.Full(1_000_000, 0);//DataGen.RandomWalk(1_000_000);
@@ -62,7 +64,7 @@ namespace WinFormsApp
 
             _axis3 = plt.AddAxis(Edge.Left, signal3.YAxisIndex);
             _axis3.Line(true, signal3.Color, 2);
-            _axis3.SetAxisConfiguration(signal3, AxisBehaviour.AutoAdjust);
+            _axis3.SetAxisConfiguration(axisConfigurations, signal3, AxisBehaviour.AutoAdjust);
             plt.Add(signal3);
 
             double[] values4 = DataGen.RandomWalk(1_000_000);
@@ -84,7 +86,7 @@ namespace WinFormsApp
 
             _axis4 = plt.AddAxis(Edge.Left, signal4.YAxisIndex);
             _axis4.Line(true, signal4.Color, 2);
-            _axis4.SetAxisConfiguration(signal4, AxisBehaviour.AutoAdjust);
+            _axis4.SetAxisConfiguration(axisConfigurations, signal4, AxisBehaviour.AutoAdjust);
             plt.Add(signal4);
 
             double[] values5 = DataGen.RandomWalk(1_000_000);
@@ -106,7 +108,7 @@ namespace WinFormsApp
 
             _axis5 = plt.AddAxis(Edge.Left, signal5.YAxisIndex);
             _axis5.Line(true, signal5.Color, 2);
-            _axis5.SetAxisConfiguration(signal5, AxisBehaviour.AutoAdjust);
+            _axis5.SetAxisConfiguration(axisConfigurations, signal5, AxisBehaviour.AutoAdjust);
             plt.Add(signal5);
 
             formsPlot1.Refresh();
