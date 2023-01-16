@@ -11,8 +11,6 @@ namespace ScottPlot.Control
 
         public TPlottable Plottable { get; set; }
 
-        public AxisLimits AxisLimits => Plottable.GetAxisLimits();
-
         public float AxisWidth { get; set; }
 
         public float AxisLabelWidth { get; set; }
@@ -33,7 +31,7 @@ namespace ScottPlot.Control
                 {
                     var height = signal.YMaxPx - signal.YMinPx;
                     return new SizeF(AxisWidth, height > 0 ? height : AxisTickLabelHeight);
-                }
+                }  
                 return new SizeF(0, 0);
             }
         }
@@ -153,13 +151,23 @@ namespace ScottPlot.Control
 
             PlotDimensions = dims;
 
-            //var axisLimits = new AxisLimits(dims.XMin, dims.XMax, signal.Ys.Min(), signal.Ys.Max());
+            var limitsTmp = signal.GetAxisLimits();
+            var yMin = signal.YMinVisible;
+            var yMax = signal.YMaxVisible;
+
+            if (Math.Abs(yMin - yMax) < 1)
+            {
+                yMin -= 1;
+                yMax += 1;
+            }
+
+            var axisLimits = new AxisLimits(limitsTmp.XMin, limitsTmp.XMax, yMin, yMax);
 
             return new PlotDimensions(
                 new SizeF(dims.Width, AxisSize.Height),
                 new SizeF(dims.DataWidth, AxisSize.Height),
                 new PointF(dims.DataOffsetX, AxisPosition.Y),
-                AxisLimits, dims.ScaleFactor);
+                axisLimits, dims.ScaleFactor);
         }
     }
 }

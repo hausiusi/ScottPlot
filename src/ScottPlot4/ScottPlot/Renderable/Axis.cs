@@ -64,7 +64,7 @@ namespace ScottPlot.Renderable
 
         // private renderable components
         private readonly AxisLabel AxisLabel = new AxisLabel();
-        private readonly AxisTicks AxisTicks = new AxisTicks();
+        private readonly AxisTicks AxisTicks = new AxisTicks ();
         private readonly AxisLine AxisLine = new AxisLine();
 
         public void SetAxisConfiguration(AxisConfigurations configurations, IPlottable plottable, AxisBehaviour behaviour)

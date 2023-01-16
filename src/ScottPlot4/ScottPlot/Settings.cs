@@ -156,7 +156,7 @@ namespace ScottPlot
         public Settings()
         {
             Plottables.CollectionChanged += (object sender, NotifyCollectionChangedEventArgs e) => PlottablesIdentifier++;
-        }
+        } 
 
         /// <summary>
         /// Return figure dimensions for the specified X and Y axes

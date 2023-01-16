@@ -33,6 +33,7 @@ namespace ScottPlot.Plottable
         private float _markerSize = 5;
 
         public float YMaxPx, YMinPx;
+        public double YMinVisible, YMaxVisible;
 
         public float MarkerSize
         {
@@ -316,12 +317,6 @@ namespace ScottPlot.Plottable
 
             double offsetY = OffsetYAsDouble;
 
-            if (Math.Abs(yMin - yMax) < 1)
-            {
-                yMin -= 1;
-                yMax += 1;
-            }
-
             return new AxisLimits(
                 xMin: xMin + OffsetX,
                 xMax: xMax + OffsetX,
@@ -361,6 +356,9 @@ namespace ScottPlot.Plottable
             if (visibleIndex1 < MinRenderIndex)
                 visibleIndex1 = MinRenderIndex;
 
+            YMinVisible = double.PositiveInfinity;
+            YMaxVisible = double.NegativeInfinity;
+
             for (int i = visibleIndex1; i <= visibleIndex2 + 1; i++)
             {
                 double yCoordinateWithOffset = AddYs(Ys[i], OffsetY);
@@ -368,6 +366,16 @@ namespace ScottPlot.Plottable
                 float xPixel = dims.GetPixelX(_SamplePeriod * i + OffsetX);
                 PointF linePoint = new(xPixel, yPixel);
                 linePoints.Add(linePoint);
+
+                if (YMinVisible > NumericConversion.GenericToDouble(ref Ys[i]))
+                {
+                    YMinVisible = NumericConversion.GenericToDouble(ref Ys[i]);
+                }
+
+                if (YMaxVisible < NumericConversion.GenericToDouble(ref Ys[i]))
+                {
+                    YMaxVisible = NumericConversion.GenericToDouble(ref Ys[i]);
+                }
             }
 
             YMaxPx = linePoints.Max(p => p.Y);
@@ -522,6 +530,8 @@ namespace ScottPlot.Plottable
             YMaxPx = linePoints.Max(p => p.Y);
             YMinPx = linePoints.Min(p => p.Y);
 
+            CalculateYminYmaxVisible(dims, offsetPoints, columnPointCount);
+
             for (int i = 0; i < linePoints.Length; i++)
                 linePoints[i].X += dims.DataOffsetX;
 
@@ -546,6 +556,28 @@ namespace ScottPlot.Plottable
                     break;
                 default:
                     throw new InvalidOperationException("unsupported fill type");
+            }
+        }
+
+        private void CalculateYminYmaxVisible(PlotDimensions dims, double offsetPoints, double columnPointCount)
+        {
+            YMinVisible = double.PositiveInfinity;
+            YMaxVisible = double.NegativeInfinity;
+
+            int visibleIndex1 = (int)(offsetPoints);
+            int visibleIndex2 = (int)(offsetPoints + columnPointCount * (dims.DataWidth + 1));
+
+            for (int i = (int)Math.Max(0, visibleIndex1); i < Math.Min(Ys.Length, visibleIndex2); i++)
+            {
+                if (YMinVisible > NumericConversion.GenericToDouble(ref Ys[i]))
+                {
+                    YMinVisible = NumericConversion.GenericToDouble(ref Ys[i]);
+                }
+
+                if (YMaxVisible < NumericConversion.GenericToDouble(ref Ys[i]))
+                {
+                    YMaxVisible = NumericConversion.GenericToDouble(ref Ys[i]);
+                }
             }
         }
 
@@ -717,6 +749,8 @@ namespace ScottPlot.Plottable
                                     y: dims.GetPixelY(AddYs(y, OffsetY))))
                               .ToArray())
                 .ToList();
+
+            CalculateYminYmaxVisible(dims, offsetPoints, columnPointCount);
 
             for (int i = 0; i < DensityLevelCount; i++)
             {

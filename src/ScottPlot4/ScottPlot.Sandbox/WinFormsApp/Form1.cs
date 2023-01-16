@@ -112,6 +112,7 @@ namespace WinFormsApp
             plt.Add(signal5);
 
             formsPlot1.Refresh();
+            
         }
 
         private void cbxLockAxis1_CheckedChanged(object sender, EventArgs e)
