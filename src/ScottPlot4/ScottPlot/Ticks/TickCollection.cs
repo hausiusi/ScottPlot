@@ -285,6 +285,7 @@ namespace ScottPlot.Ticks
                 maxTickCount = (int)(dims.DataHeight / labelHeight * TickDensity);
                 maxTickCount = forcedTickCount ?? maxTickCount;
                 maxTickCount = maxTickCount == 0 ? 1 : maxTickCount;
+                manualSpacingY = (high - low) / maxTickCount; // The fast workaround for packed ticklabels with axisconfig
                 tickSpacing = (manualSpacingY != 0) ? manualSpacingY : GetIdealTickSpacing(low, high, maxTickCount, radix);
                 tickSpacing = Math.Max(tickSpacing, MinimumTickSpacing);
             }
