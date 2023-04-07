@@ -31,7 +31,7 @@ namespace ScottPlot.Control
                 {
                     var height = signal.YMaxPx - signal.YMinPx;
                     return new SizeF(AxisWidth, height > 0 ? height : AxisTickLabelHeight);
-                }  
+                }
                 return new SizeF(0, 0);
             }
         }
