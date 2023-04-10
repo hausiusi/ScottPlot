@@ -301,7 +301,7 @@ namespace ScottPlot.Ticks
 
             // now that tick spacing is known, populate the list of ticks and labels
             double firstTickOffset = Orientation == AxisOrientation.Vertical ? 0 : low % tickSpacing;
-            int tickCount = (int)((high - low) / tickSpacing) + 2;
+            int tickCount = (int)((high - low) / tickSpacing) + (labelHeight > dims.DataHeight ? 0 : 2);
             tickCount = tickCount > 1000 ? 1000 : tickCount;
             tickCount = tickCount < 1 ? 1 : tickCount;
             tickPositionsMajor = Enumerable.Range(0, tickCount)
@@ -314,7 +314,7 @@ namespace ScottPlot.Ticks
                 double tickBelow = low - firstTickOffset;
                 double firstTick = tickPositionsMajor.Length > 0 ? tickPositionsMajor[0] : tickBelow;
                 double nextTick = tickBelow + tickSpacing;
-                tickPositionsMajor = new double[] { firstTick, nextTick };
+                tickPositionsMajor = new double[] { firstTick};
             }
             else if (Orientation == AxisOrientation.Vertical)
             {

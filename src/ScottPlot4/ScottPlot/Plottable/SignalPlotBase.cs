@@ -378,8 +378,11 @@ namespace ScottPlot.Plottable
                 }
             }
 
-            YMaxPx = linePoints.Max(p => p.Y);
-            YMinPx = linePoints.Min(p => p.Y);
+            if (linePoints.Count > 0)
+            {
+                YMaxPx = linePoints.Max(p => p.Y);
+                YMinPx = linePoints.Min(p => p.Y);
+            }
 
             if (linePoints.Count > 1)
             {
