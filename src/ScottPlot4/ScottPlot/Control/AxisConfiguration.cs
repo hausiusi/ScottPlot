@@ -30,7 +30,9 @@ namespace ScottPlot.Control
                 if (Plottable is SignalPlot signal)
                 {
                     var height = signal.YMaxPx - signal.YMinPx;
-                    return new SizeF(AxisWidth, height > 0 ? height : AxisTickLabelHeight);
+                    height = (height > AxisTickLabelHeight ? height + AxisTickLabelHeight : AxisTickLabelHeight);
+
+                    return new SizeF(AxisWidth, height);
                 }
                 return new SizeF(0, 0);
             }
@@ -78,17 +80,15 @@ namespace ScottPlot.Control
                 return false;
             }
 
-            var leftLineCheck1 = IsInRange(this.AxisPosition.X, configuration2.AxisPosition.X,
-                configuration2.AxisPosition.X + configuration2.AxisWidth);
+            var conf1X1 = this.AxisPosition.X - this.AxisTickLabelHeight;
+            var conf1X2 = this.AxisPosition.X + this.AxisWidth;
+            var conf2X1 = configuration2.AxisPosition.X - configuration2.AxisTickLabelHeight;
+            var conf2X2 = configuration2.AxisPosition.X + configuration2.AxisWidth;
 
-            var rightLineCheck1 = IsInRange(this.AxisPosition.X + this.AxisWidth, configuration2.AxisPosition.X,
-                configuration2.AxisPosition.X + configuration2.AxisWidth);
-
-            var leftLineCheck2 = IsInRange(configuration2.AxisPosition.X, this.AxisPosition.X,
-                this.AxisPosition.X + this.AxisWidth);
-
-            var rightLineCheck2 = IsInRange(configuration2.AxisPosition.X + configuration2.AxisWidth, this.AxisPosition.X,
-                this.AxisPosition.X + this.AxisWidth);
+            var leftLineCheck1 = IsInRange(this.AxisPosition.X, conf2X1, conf2X2);
+            var rightLineCheck1 = IsInRange(this.AxisPosition.X + this.AxisWidth, conf2X1, conf2X2);
+            var leftLineCheck2 = IsInRange(configuration2.AxisPosition.X, conf1X1, conf1X2);
+            var rightLineCheck2 = IsInRange(configuration2.AxisPosition.X + configuration2.AxisWidth, conf1X1, conf1X2);
 
             return leftLineCheck1 || rightLineCheck1 || leftLineCheck2 || rightLineCheck2;
         }
@@ -116,24 +116,27 @@ namespace ScottPlot.Control
                 return false;
             }
 
-            var upperLineCheck1 = IsInRange(this.AxisPosition.Y, configuration2.AxisPosition.Y,
-                configuration2.AxisPosition.Y + configuration2.AxisSize.Height);
+            var actualHeight1 = Math.Max(this.AxisSize.Height + this.AxisTickLabelHeight, this.AxisLabelWidth);
+            var actualHeight2 = Math.Max(configuration2.AxisSize.Height + this.AxisTickLabelHeight, configuration2.AxisLabelWidth);
+            var center1 = this.AxisPosition.Y + (AxisSize.Height / 2);
+            var center2 = configuration2.AxisPosition.Y + (configuration2.AxisSize.Height / 2);
 
-            var bottomLineCheck1 = IsInRange(this.AxisPosition.Y + this.AxisSize.Height, configuration2.AxisPosition.Y,
-                configuration2.AxisPosition.Y + configuration2.AxisSize.Height);
+            var conf1Y1 = center1 - actualHeight1 / 2;
+            var conf1Y2 = center1 + actualHeight1 / 2;
+            var conf2Y1 = center2 - actualHeight2 / 2;
+            var conf2Y2 = center2 + actualHeight2 / 2;
 
-            var upperLineCheck2 = IsInRange(configuration2.AxisPosition.Y, this.AxisPosition.Y,
-                this.AxisPosition.Y + this.AxisSize.Height);
-
-            var bottomLineCheck2 = IsInRange(configuration2.AxisPosition.Y + configuration2.AxisSize.Height, this.AxisPosition.Y,
-                this.AxisPosition.Y + this.AxisSize.Height);
+            var upperLineCheck1 = IsInRange(conf1Y1, conf2Y1, conf2Y2);
+            var bottomLineCheck1 = IsInRange(conf1Y2, conf2Y1, conf2Y2);
+            var upperLineCheck2 = IsInRange(conf2Y1, conf1Y1, conf1Y2);
+            var bottomLineCheck2 = IsInRange(conf2Y2, conf1Y1, conf1Y2);
 
             return upperLineCheck1 || bottomLineCheck1 || upperLineCheck2 || bottomLineCheck2;
         }
 
         public bool Bounds(Axis other)
         {
-            return SharesVerticalLine(other) && SharesHorizontalLine(other);
+            return this.Axis != other && SharesVerticalLine(other) && SharesHorizontalLine(other);
         }
 
         private bool IsInRange(float n, float low, float high)
@@ -155,10 +158,10 @@ namespace ScottPlot.Control
             var yMin = signal.YMinVisible;
             var yMax = signal.YMaxVisible;
 
-            if (Math.Abs(yMin - yMax) < 1)
+            if (Math.Abs(yMin - yMax) < 0.0001)
             {
-                yMin -= 1;
-                yMax += 1;
+                yMin -= 0.0001;
+                yMax += 0.0001;
             }
 
             var axisLimits = new AxisLimits(limitsTmp.XMin, limitsTmp.XMax, yMin, yMax);

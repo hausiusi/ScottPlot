@@ -64,7 +64,7 @@ namespace ScottPlot.Renderable
 
         // private renderable components
         private readonly AxisLabel AxisLabel = new AxisLabel();
-        private readonly AxisTicks AxisTicks = new AxisTicks ();
+        private readonly AxisTicks AxisTicks = new AxisTicks();
         private readonly AxisLine AxisLine = new AxisLine();
 
         public void SetAxisConfiguration(AxisConfigurations configurations, IPlottable plottable, AxisBehaviour behaviour)
@@ -143,19 +143,7 @@ namespace ScottPlot.Renderable
             {
                 return 0;
             }
-            if (Configuration is { Behaviour: AxisBehaviour.AutoAdjust })
-            {
-                var axesOnThisVerticalLine = new List<AxisConfiguration<IPlottable>>();
-                axesOnThisVerticalLine.Add(this.Configuration);
 
-                axesOnThisVerticalLine.AddRange(Configurations.Where(configuration => configuration.SharesVerticalLine(this)));
-                axesOnThisVerticalLine.Sort((x, y) => (int)(y.Axis.PixelSize - x.Axis.PixelSize));
-                axesOnThisVerticalLine.RemoveAll((x) => x.Axis.PixelSize != axesOnThisVerticalLine[0].Axis.PixelSize);
-                axesOnThisVerticalLine.Sort((x, y)=> (int)(x.AxisPosition.Y - y.AxisPosition.Y));
-
-                var resultConfig = axesOnThisVerticalLine.Find((x)=> x == this.Configuration);
-                return resultConfig == null || resultConfig != axesOnThisVerticalLine[0] ? 0 : resultConfig.Axis.PixelSize + PixelSizePadding;
-            }
             return PixelSize + PixelSizePadding;
         }
 
@@ -173,7 +161,13 @@ namespace ScottPlot.Renderable
             {
                 Configuration.AxisWidth = PixelSize;
                 Configuration.AxisTickLabelHeight = AxisTicks.TickCollection.LargestLabelHeight;
-                Configuration.AxisLabelWidth = AxisLabel.PixelSize;
+
+                Configuration.AxisLabelWidth = 0;
+                if (AxisLabel.Label != null)
+                {
+                    Configuration.AxisLabelWidth =
+                        GDI.MeasureStringUsingTemporaryGraphics(AxisLabel.Label, AxisLabel.Font).Width;
+                }
             }
         }
 
@@ -189,38 +183,42 @@ namespace ScottPlot.Renderable
                 return;
             }
 
-            var axisTouchesAnother = false;
             Configuration.OffsetX = 0;
 
-            do
+            foreach (var configuration in Configurations)
             {
-                axisTouchesAnother = false;
-                foreach (var configuration in Configurations)
+                if (configuration == this.Configuration)
                 {
-                    if (configuration == this.Configuration)
-                    {
-                        continue;
-                    }
-
-                    if (configuration.PlotDimensions == null)
-                    {
-                        continue;
-                    }
-
-                    if (this.Configuration.Bounds(configuration.Axis))
-                    {
-                        axisTouchesAnother = true;
-                        this.Configuration.OffsetX += 1; // configuration.AxisWidth;
-                        break;
-                    }
+                    continue;
                 }
-            } while (axisTouchesAnother);
+
+                if (configuration.PlotDimensions == null)
+                {
+                    continue;
+                }
+
+                if (configuration.Axis.IsVisible == false)
+                {
+                    continue;
+                }
+
+                if (this.AxisIndex < configuration.Axis.AxisIndex)
+                {
+                    continue;
+                }
+                
+                if (this.Configuration.Bounds(configuration.Axis))
+                {
+                    this.Configuration.OffsetX = configuration.OffsetX + configuration.AxisSize.Width; // configuration.AxisWidth;
+                }
+            }
 
             /*if (this.IsHorizontal)
             {
                 this.PixelOffset = Configurations.Max(x => x.OffsetX);
             }*/
         }
+
 
         /// <summary>
         /// Render all components of this axis onto the given Bitmap
@@ -671,7 +669,7 @@ namespace ScottPlot.Renderable
                 {
                     // determine how many pixels the largest tick label occupies
                     float maxHeight = AxisTicks.TickCollection.LargestLabelHeight;
-                    float maxWidth = AxisTicks.TickCollection.LargestLabelWidth * 1.2f;
+                    float maxWidth = AxisTicks.TickCollection.LargestLabelWidth * 1.0f;
 
                     // calculate the width and height of the rotated label
                     float largerEdgeLength = Math.Max(maxWidth, maxHeight);

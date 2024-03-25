@@ -23,7 +23,13 @@ namespace WinFormsApp
 
             AxisConfigurations axisConfigurations = new();
 
-            double[] values2 = DataGen.RandomWalk(1_000_000);
+            double[] values2 = new double[1000000];
+            var rnd = new Random();
+            for (var i =0; i < values2.Length; i++)
+            {
+                values2[i] = 27 + (i * (rnd.Next(1) * 0.2));
+            }
+
             var signal2 = new SignalPlot()
             {
                 XAxisIndex = 1,

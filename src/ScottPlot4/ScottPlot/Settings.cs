@@ -156,7 +156,7 @@ namespace ScottPlot
         public Settings()
         {
             Plottables.CollectionChanged += (object sender, NotifyCollectionChangedEventArgs e) => PlottablesIdentifier++;
-        } 
+        }
 
         /// <summary>
         /// Return figure dimensions for the specified X and Y axes
@@ -658,8 +658,26 @@ namespace ScottPlot
 
             if (ManualDataPadding is null)
             {
-                padLeft = Axes.Where(x => x.Edge == Edge.Left).Select(x => x.GetSize()).Sum();
-                padRight = Axes.Where(x => x.Edge == Edge.Right).Select(x => x.GetSize()).Sum();
+                var rightMostAxis = Axes.FirstOrDefault(x => x.IsVisible && x.Edge == Edge.Right);
+                var leftMostAxis = Axes.FirstOrDefault(x => x.IsVisible && x.Edge == Edge.Left);
+                foreach (var axis in Axes.Where(axis => axis.IsVisible && axis.Edge == Edge.Left && axis.Configuration != null))
+                {
+                    if (axis.Configuration.OffsetX + axis.GetSize() > leftMostAxis.Configuration.OffsetX + leftMostAxis.GetSize())
+                    {
+                        leftMostAxis = axis;
+                    }
+                }
+
+                foreach (var axis in Axes.Where(axis => axis.IsVisible && axis.Edge == Edge.Right && axis.Configuration != null))
+                {
+                    if (axis.Configuration.OffsetX + axis.GetSize() > rightMostAxis.Configuration.OffsetX + rightMostAxis.GetSize())
+                    {
+                        rightMostAxis = axis;
+                    }
+                }
+
+                padLeft = leftMostAxis is { Configuration: { } } ? leftMostAxis.Configuration.OffsetX + leftMostAxis.GetSize() : Axes.Where(x => x.Edge == Edge.Left).Select(x => x.GetSize()).Sum();
+                padRight = rightMostAxis is { Configuration: { } } ? rightMostAxis.Configuration.OffsetX + rightMostAxis.GetSize() : Axes.Where(x => x.Edge == Edge.Right).Select(x => x.GetSize()).Sum();
                 padBottom = Axes.Where(x => x.Edge == Edge.Bottom).Select(x => x.GetSize()).Sum();
                 padTop = Axes.Where(x => x.Edge == Edge.Top).Select(x => x.GetSize()).Sum();
             }
