@@ -30,7 +30,7 @@ namespace ScottPlot.Control
                 if (Plottable is SignalPlot signal)
                 {
                     var height = signal.YMaxPx - signal.YMinPx;
-                    height = (height > AxisTickLabelHeight ? height + AxisTickLabelHeight : AxisTickLabelHeight);
+                    height = (height > AxisTickLabelHeight ? height : AxisTickLabelHeight);
 
                     return new SizeF(AxisWidth, height);
                 }

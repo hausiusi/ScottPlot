@@ -206,7 +206,7 @@ namespace ScottPlot.Renderable
                 {
                     continue;
                 }
-                
+
                 if (this.Configuration.Bounds(configuration.Axis))
                 {
                     this.Configuration.OffsetX = configuration.OffsetX + configuration.AxisSize.Width; // configuration.AxisWidth;

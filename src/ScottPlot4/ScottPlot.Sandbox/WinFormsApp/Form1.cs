@@ -95,7 +95,7 @@ namespace WinFormsApp
             _axis4.SetAxisConfiguration(axisConfigurations, signal4, AxisBehaviour.AutoAdjust);
             plt.Add(signal4);
 
-            double[] values5 = DataGen.RandomWalk(1_000_000);
+            double[] values5 = DataGen.Cos(1_000_000, 1);
             var signal5 = new SignalPlot()
             {
                 XAxisIndex = 1,
@@ -114,7 +114,7 @@ namespace WinFormsApp
 
             _axis5 = plt.AddAxis(Edge.Left, signal5.YAxisIndex);
             _axis5.Line(true, signal5.Color, 2);
-            //_axis5.SetAxisConfiguration(axisConfigurations, signal5, AxisBehaviour.AutoAdjust);
+            _axis5.SetAxisConfiguration(axisConfigurations, signal5, AxisBehaviour.AutoAdjust);
             plt.Add(signal5);
 
             formsPlot1.Refresh();
